@@ -14,10 +14,15 @@ body {
 }
 
 
+
 h1 {
-    font-size: 2rem;
+    color: #e2b714;
+    font-size: 3rem;
     margin-bottom: 20px;
 }
+
+
+
 
 main {
     display: flex;
