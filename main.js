@@ -1,10 +1,11 @@
 // Create MathQuill input box
 let mathField = MathQuill.getInterface(2).MathField($('#mathquill-input')[0]);
-let toisenasteenyhtalo = "x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}"
+
 const question = document.querySelector("#question")
 const equation = document.querySelector("#equation")
+let equationCheckbox = document.getElementById("equation2");
+let definitionCheckbox = document.getElementById("definition");
 
-// MathQuill.StaticMath(equation)
 
 let equations = [
     {
@@ -14,10 +15,6 @@ let equations = [
     {
         name: "Gravitaatio voima",
         formula: "F=\\gamma\\frac{m_1m_2}{r^2}"
-    },
-    {
-        name: "Toisen asteen yhtälö",
-        formula: "x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}"
     },
     {
         name: "Normaalikiihtyvyys",
@@ -44,23 +41,64 @@ let equations = [
         formula: "p=\\frac{F}{A}"
     },
     {
-        name: "Harmonisen värähtelijän jaksonaika",
-        formula: "p=\\frac{F}{A}"
+        name: "Pituuden lämpötilakerroin",
+        formula: "l=l_0\\left(1+\\alpha \\Delta T\\right)"
+    },
+    {
+        name: "Ideaalikaasun tilanyhtälö",
+        formula: "pV=nRT"
+    },
+    {
+        name: "Joulen laki",
+        formula: "l=l_0\\left(1+\\alpha \\Delta T\\right)"
+    },
+    {
+        name: "Pituuden lämpötilakerroin",
+        formula: "P=UI"
+    },
+    {
+        name: "Sähkökentän voimakkuus",
+        formula: "l=l_0\\left(1+\\alpha \\Delta T\\right)"
+    },
+    {
+        name: "Pituuden lämpötilakerroin",
+        formula: "l=l_0\\left(1+\\alpha \\Delta T\\right)"
     },
 
 
     // Add more items if needed
 ];
 
-// runThatShit()
-let randomEquation = equations[Math.floor(Math.random() * equations.length)].formula
+let randomQuestion = equations[Math.floor(Math.random() * equations.length)];
+
+let randomEquation = randomQuestion.formula
+let randomDefinition = randomQuestion.name
+
+question.innerHTML = randomDefinition
 equation.innerHTML = randomEquation
 MathQuill.StaticMath(equation)
 
 
+let showEquation = true
+let showDefinition = true
+
+
+
+// Add event listeners to the checkboxes
+equationCheckbox.addEventListener("change", function () {
+    showEquation = equationCheckbox.checked
+    console.log(equationCheckbox.checked)
+});
+
+definitionCheckbox.addEventListener("change", function () {
+    showDefinition = definitionCheckbox.checked
+    console.log(definitionCheckbox.checked)
+});
 
 function runThatShit() {
-    if (mathField.latex() == randomEquation) {
+
+
+    if (mathField.latex() == randomEquation.formula) {
         alert("Oikein")
     } else {
         alert("Väärin")
@@ -68,48 +106,46 @@ function runThatShit() {
     console.log(mathField.latex())
     console.log(randomEquation)
     // let randomName = equations[randomIndex].name
-    randomEquation = equations[Math.floor(Math.random() * equations.length)].formula
+    randomEquation = equations[Math.floor(Math.random() * equations.length)]
 
     // ask in text
     // question.innerHTML = randomEquation
 
-    equation.innerHTML = randomEquation
-    MathQuill.StaticMath(equation)
+    if (showEquation === true) {
+        equation.innerHTML = randomEquation.formula
+        MathQuill.StaticMath(equation)
+    }
+    else {
+        equation.innerHTML = ""
+    }
+
+    if (showDefinition === true) {
+        question.innerHTML = randomEquation.name
+    }
+    else {
+        question.innerHTML = ""
+    }
+
 }
 
-// function checkAnswer(answer, result) {
-//     console.log(answer)
-//     console.log(result)
-//     if (answer === result) {
-//         alert("Oikein")
-//     } else {
-//         alert("Väärin")
-//     }
-// }
 
-
-
-// // Function to get LaTeX from MathQuill input box
-// function getLatex() {
-//     // var latex = mathField.latex();
-//     // alert('LaTeX expression: ' + latex);
-//     // alert(mathField.latex())
-//     alert(bank[1][1])
-
-//     // if (latex === "x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}") {
-//     //     alert("correct")
-//     // }
-//     // else {
-//     //     alert("nah")
-//     // }
-
-
-// }
+var enterKeyPressCount = 0;
 
 document.getElementById("runButton").style.display = "none";
+
 document.getElementById("mathquill-input").addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-        runThatShit();
-        mathField.latex("")
+        enterKeyPressCount++;
+
+        if (enterKeyPressCount === 2) {
+            runThatShit();
+            mathField.latex("");
+            enterKeyPressCount = 0;  // Reset the count
+        }
+    } else {
+        enterKeyPressCount = 0;  // Reset the count if any other key is pressed
     }
 });
+
+
+
